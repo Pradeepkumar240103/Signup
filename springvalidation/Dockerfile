@@ -1,8 +1,11 @@
+# Stage 1: Build
 FROM maven:3.9.2-eclipse-temurin-17 AS build
 WORKDIR /app
-COPY . .
+COPY springvalidation/ ./springvalidation/
+WORKDIR /app/springvalidation
 RUN mvn clean package -DskipTests
 
+# Stage 2: Run
 FROM openjdk:17
 WORKDIR /app
 COPY --from=build /app/springvalidation/target/springvalidation-0.0.1-SNAPSHOT.jar app.jar
